@@ -37,4 +37,9 @@ while (true)
         Console.WriteLine("  view - показать все задачи");
         Console.WriteLine("  exit - завершить работу программы");
     }
+    else if (input == "profile")
+    {
+        Console.WriteLine($"{firstName} {lastName}, {birthYear}");
+    }
+
 }
