@@ -67,5 +67,32 @@ while (true)
             Console.WriteLine("Неверный формат. Используйте: add \"текст задачи\"");
         }
     }
+    else if (input == "view")
+    {
+        Console.WriteLine("Список задач:");
+        bool hasTasks = false;
+        for (int i = 0; i < todos.Length; i++)
+        {
+            if (!string.IsNullOrEmpty(todos[i]))
+            {
+                Console.WriteLine($"{i + 1}. {todos[i]}");
+                hasTasks = true;
+            }
+        }
+
+        if (!hasTasks)
+        {
+            Console.WriteLine("Задач пока нет.");
+        }
+    }
+    else if (input == "exit")
+    {
+        Console.WriteLine("Выход из программы.");
+        break;
+    }
+    else
+    {
+        Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+    }
 
 }
