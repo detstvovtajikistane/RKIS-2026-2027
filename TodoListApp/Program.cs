@@ -41,5 +41,31 @@ while (true)
     {
         Console.WriteLine($"{firstName} {lastName}, {birthYear}");
     }
+    else if (input.StartsWith("add"))
+    {
+        string[] parts = input.Split('"');
+        if (parts.Length >= 2 && !string.IsNullOrWhiteSpace(parts[1]))
+        {
+            string task = parts[1];
+
+            if (count == todos.Length)
+            {
+                string[] newTodos = new string[todos.Length * 2];
+                for (int i = 0; i < todos.Length; i++)
+                {
+                    newTodos[i] = todos[i];
+                }
+                todos = newTodos;
+            }
+
+            todos[count] = task;
+            count++;
+            Console.WriteLine($"Задача \"{task}\" успешно добавлена!");
+        }
+        else
+        {
+            Console.WriteLine("Неверный формат. Используйте: add \"текст задачи\"");
+        }
+    }
 
 }
