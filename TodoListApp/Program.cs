@@ -13,3 +13,28 @@ int birthYear = Convert.ToInt32(yearInput);
 int currentYear = DateTime.Now.Year;
 int age = currentYear - birthYear;
 Console.WriteLine($"\nДобавлен пользователь {firstName} {lastName}, возраст - {age}");
+string[] todos = new string[2];
+int count = 0;
+
+Console.WriteLine("\nВведите команду (для справки введите help):");
+
+while (true)
+{
+    Console.Write("> ");
+    string input = Console.ReadLine();
+
+    if (string.IsNullOrWhiteSpace(input))
+    {
+        continue;
+    }
+
+    if (input == "help")
+    {
+        Console.WriteLine("Список команд:");
+        Console.WriteLine("  help - показать список доступных команд");
+        Console.WriteLine("  profile - вывести данные пользователя");
+        Console.WriteLine("  add \"текст\" - добавить новую задачу");
+        Console.WriteLine("  view - показать все задачи");
+        Console.WriteLine("  exit - завершить работу программы");
+    }
+}
