@@ -1,34 +1,84 @@
 ﻿using System;
-Console.WriteLine("========================================");
-Console.WriteLine("Работу выполнили: Чичикин и Мартемьянов");
-Console.WriteLine("Группа: 3831");
-Console.WriteLine("========================================\n");
-Console.Write("Введите имя: ");
-string firstName = Console.ReadLine();
-Console.Write("Введите фамилию: ");
-string lastName = Console.ReadLine();
-Console.Write("Введите год рождения: ");
-string yearInput = Console.ReadLine();
-int birthYear = Convert.ToInt32(yearInput);
-int currentYear = DateTime.Now.Year;
-int age = currentYear - birthYear;
-Console.WriteLine($"\nДобавлен пользователь {firstName} {lastName}, возраст - {age}");
-string[] todos = new string[2];
-int count = 0;
 
-Console.WriteLine("\nВведите команду (для справки введите help):");
-
-while (true)
+class Program
 {
-    Console.Write("> ");
-    string input = Console.ReadLine();
+    const int InitialCapacity = 2;
 
-    if (string.IsNullOrWhiteSpace(input))
+    static string firstName = "";
+    static string lastName = "";
+    static int birthYear = 0;
+
+    static string[] todos = new string[InitialCapacity];
+    static int count = 0;
+
+    static void Main()
     {
-        continue;
+        PrintHeader();
+        RegisterUser();
+
+        Console.WriteLine("\nВведите команду (для справки введите help):");
+
+        while (true)
+        {
+            Console.Write("> ");
+            string? input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                continue;
+            }
+
+            if (input == "help")
+            {
+                PrintHelp();
+            }
+            else if (input == "profile")
+            {
+                PrintProfile();
+            }
+            else if (input.StartsWith("add"))
+            {
+                AddTodo(input);
+            }
+            else if (input == "view")
+            {
+                ViewTodos();
+            }
+            else if (input == "exit")
+            {
+                Console.WriteLine("Выход из программы.");
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+            }
+        }
     }
 
-    if (input == "help")
+    static void PrintHeader()
+    {
+        Console.WriteLine("========================================");
+        Console.WriteLine("Работу выполнили: Чичикин и Мартемьянов");
+        Console.WriteLine("Группа: 3831");
+        Console.WriteLine("========================================\n");
+    }
+
+    static void RegisterUser()
+    {
+        Console.Write("Введите имя: ");
+        firstName = Console.ReadLine() ?? "";
+        Console.Write("Введите фамилию: ");
+        lastName = Console.ReadLine() ?? "";
+        Console.Write("Введите год рождения: ");
+        string? yearInput = Console.ReadLine();
+        birthYear = Convert.ToInt32(yearInput);
+        int currentYear = DateTime.Now.Year;
+        int age = currentYear - birthYear;
+        Console.WriteLine($"\nДобавлен пользователь {firstName} {lastName}, возраст - {age}");
+    }
+
+    static void PrintHelp()
     {
         Console.WriteLine("Список команд:");
         Console.WriteLine("  help - показать список доступных команд");
@@ -37,11 +87,13 @@ while (true)
         Console.WriteLine("  view - показать все задачи");
         Console.WriteLine("  exit - завершить работу программы");
     }
-    else if (input == "profile")
+
+    static void PrintProfile()
     {
         Console.WriteLine($"{firstName} {lastName}, {birthYear}");
     }
-    else if (input.StartsWith("add"))
+
+    static void AddTodo(string input)
     {
         string[] parts = input.Split('"');
         if (parts.Length >= 2 && !string.IsNullOrWhiteSpace(parts[1]))
@@ -50,12 +102,7 @@ while (true)
 
             if (count == todos.Length)
             {
-                string[] newTodos = new string[todos.Length * 2];
-                for (int i = 0; i < todos.Length; i++)
-                {
-                    newTodos[i] = todos[i];
-                }
-                todos = newTodos;
+                ResizeArrays();
             }
 
             todos[count] = task;
@@ -67,11 +114,12 @@ while (true)
             Console.WriteLine("Неверный формат. Используйте: add \"текст задачи\"");
         }
     }
-    else if (input == "view")
+
+    static void ViewTodos()
     {
         Console.WriteLine("Список задач:");
         bool hasTasks = false;
-        for (int i = 0; i < todos.Length; i++)
+        for (int i = 0; i < count; i++)
         {
             if (!string.IsNullOrEmpty(todos[i]))
             {
@@ -85,14 +133,14 @@ while (true)
             Console.WriteLine("Задач пока нет.");
         }
     }
-    else if (input == "exit")
-    {
-        Console.WriteLine("Выход из программы.");
-        break;
-    }
-    else
-    {
-        Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
-    }
 
+    static void ResizeArrays()
+    {
+        string[] newTodos = new string[todos.Length * 2];
+        for (int i = 0; i < count; i++)
+        {
+            newTodos[i] = todos[i];
+        }
+        todos = newTodos;
+    }
 }
