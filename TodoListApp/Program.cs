@@ -50,6 +50,10 @@ class Program
             {
                 DoneTodo(input);
             }
+            else if (input.StartsWith("delete"))
+            {
+                DeleteTodo(input);
+            }
             else if (input == "exit")
             {
                 Console.WriteLine("Выход из программы.");
@@ -92,6 +96,7 @@ class Program
         Console.WriteLine("  add \"текст\" - добавить новую задачу");
         Console.WriteLine("  view - показать все задачи");
         Console.WriteLine("  done <номер> - отметить задачу выполненной");
+        Console.WriteLine("  delete <номер> - удалить задачу");
         Console.WriteLine("  exit - завершить работу программы");
     }
 
@@ -157,6 +162,35 @@ class Program
         }
 
         Console.WriteLine("Неверный номер задачи. Используйте: done <номер>");
+    }
+
+    static void DeleteTodo(string input)
+    {
+        string[] parts = input.Split(' ');
+        if (parts.Length >= 2)
+        {
+            int index = Convert.ToInt32(parts[1]) - 1;
+            if (index >= 0 && index < count)
+            {
+                string deletedTask = todos[index];
+                for (int i = index; i < count - 1; i++)
+                {
+                    todos[i] = todos[i + 1];
+                    statuses[i] = statuses[i + 1];
+                    dates[i] = dates[i + 1];
+                }
+
+                todos[count - 1] = "";
+                statuses[count - 1] = false;
+                dates[count - 1] = default;
+                count--;
+
+                Console.WriteLine($"Задача \"{deletedTask}\" успешно удалена!");
+                return;
+            }
+        }
+
+        Console.WriteLine("Неверный номер задачи. Используйте: delete <номер>");
     }
 
     static void ResizeArrays()
