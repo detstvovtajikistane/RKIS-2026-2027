@@ -9,6 +9,8 @@ class Program
     static int birthYear = 0;
 
     static string[] todos = new string[InitialCapacity];
+    static bool[] statuses = new bool[InitialCapacity];
+    static DateTime[] dates = new DateTime[InitialCapacity];
     static int count = 0;
 
     static void Main()
@@ -106,6 +108,8 @@ class Program
             }
 
             todos[count] = task;
+            statuses[count] = false;
+            dates[count] = DateTime.Now;
             count++;
             Console.WriteLine($"Задача \"{task}\" успешно добавлена!");
         }
@@ -118,29 +122,36 @@ class Program
     static void ViewTodos()
     {
         Console.WriteLine("Список задач:");
-        bool hasTasks = false;
-        for (int i = 0; i < count; i++)
-        {
-            if (!string.IsNullOrEmpty(todos[i]))
-            {
-                Console.WriteLine($"{i + 1}. {todos[i]}");
-                hasTasks = true;
-            }
-        }
-
-        if (!hasTasks)
+        if (count == 0)
         {
             Console.WriteLine("Задач пока нет.");
+            return;
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            string status = statuses[i] ? "Сделано" : "Не сделано";
+            string date = dates[i].ToString("dd.MM.yyyy HH:mm:ss");
+            Console.WriteLine($"{i + 1}. {todos[i]} [{status}] ({date})");
         }
     }
 
     static void ResizeArrays()
     {
-        string[] newTodos = new string[todos.Length * 2];
+        int newCapacity = todos.Length * 2;
+        string[] newTodos = new string[newCapacity];
+        bool[] newStatuses = new bool[newCapacity];
+        DateTime[] newDates = new DateTime[newCapacity];
+
         for (int i = 0; i < count; i++)
         {
             newTodos[i] = todos[i];
+            newStatuses[i] = statuses[i];
+            newDates[i] = dates[i];
         }
+
         todos = newTodos;
+        statuses = newStatuses;
+        dates = newDates;
     }
 }
