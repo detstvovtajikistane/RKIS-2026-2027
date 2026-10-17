@@ -46,6 +46,10 @@ class Program
             {
                 ViewTodos();
             }
+            else if (input.StartsWith("done"))
+            {
+                DoneTodo(input);
+            }
             else if (input == "exit")
             {
                 Console.WriteLine("Выход из программы.");
@@ -87,6 +91,7 @@ class Program
         Console.WriteLine("  profile - вывести данные пользователя");
         Console.WriteLine("  add \"текст\" - добавить новую задачу");
         Console.WriteLine("  view - показать все задачи");
+        Console.WriteLine("  done <номер> - отметить задачу выполненной");
         Console.WriteLine("  exit - завершить работу программы");
     }
 
@@ -134,6 +139,24 @@ class Program
             string date = dates[i].ToString("dd.MM.yyyy HH:mm:ss");
             Console.WriteLine($"{i + 1}. {todos[i]} [{status}] ({date})");
         }
+    }
+
+    static void DoneTodo(string input)
+    {
+        string[] parts = input.Split(' ');
+        if (parts.Length >= 2)
+        {
+            int index = Convert.ToInt32(parts[1]) - 1;
+            if (index >= 0 && index < count)
+            {
+                statuses[index] = true;
+                dates[index] = DateTime.Now;
+                Console.WriteLine($"Задача \"{todos[index]}\" отмечена как выполненная!");
+                return;
+            }
+        }
+
+        Console.WriteLine("Неверный номер задачи. Используйте: done <номер>");
     }
 
     static void ResizeArrays()
