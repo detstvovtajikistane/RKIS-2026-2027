@@ -54,6 +54,10 @@ class Program
             {
                 DeleteTodo(input);
             }
+            else if (input.StartsWith("update"))
+            {
+                UpdateTodo(input);
+            }
             else if (input == "exit")
             {
                 Console.WriteLine("Выход из программы.");
@@ -97,6 +101,7 @@ class Program
         Console.WriteLine("  view - показать все задачи");
         Console.WriteLine("  done <номер> - отметить задачу выполненной");
         Console.WriteLine("  delete <номер> - удалить задачу");
+        Console.WriteLine("  update <номер> \"текст\" - изменить задачу");
         Console.WriteLine("  exit - завершить работу программы");
     }
 
@@ -191,6 +196,29 @@ class Program
         }
 
         Console.WriteLine("Неверный номер задачи. Используйте: delete <номер>");
+    }
+
+    static void UpdateTodo(string input)
+    {
+        string[] quoteParts = input.Split('"');
+        if (quoteParts.Length >= 2 && !string.IsNullOrWhiteSpace(quoteParts[1]))
+        {
+            string newText = quoteParts[1];
+            string[] firstParts = quoteParts[0].Trim().Split(' ');
+            if (firstParts.Length >= 2)
+            {
+                int index = Convert.ToInt32(firstParts[1]) - 1;
+                if (index >= 0 && index < count)
+                {
+                    todos[index] = newText;
+                    dates[index] = DateTime.Now;
+                    Console.WriteLine($"Задача {index + 1} успешно обновлена!");
+                    return;
+                }
+            }
+        }
+
+        Console.WriteLine("Неверный формат или номер задачи. Используйте: update <номер> \"новый текст\"");
     }
 
     static void ResizeArrays()
